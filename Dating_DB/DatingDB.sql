@@ -5,7 +5,7 @@ first_name varchar(50),
 phone varchar(10),
 email varchar(100),
 gender varchar (6),
-birthday date,
+birthday varchar (8),
 CONSTRAINT contact_key PRIMARY KEY (contact_id)
 );
 
@@ -42,14 +42,15 @@ status varchar (50),
 CONSTRAINT status_key PRIMARY KEY (status_id)
 );
 
-ALTER TABLE my_contacts
-add column profession bigserial REFERENCES profession (prof_id)
+CREATE TABLE contact_seeking();
 
-insert into my_contacts (last_name,first_name,phone,email,gender,birthday)
+CREATE TABLE contact_interest();
+
+insert into my_contacts (last_name,first_name,phone,email,gender,birthday,profession,status,zip_code)
 values
-('Walkerley','Kyle','0769409564','kyle_walk@icloud.com','male',2001-10-30),
-('Aartaple','At','0825568794','ATAARTAPLE@gmail.com','male',2001-04-25),
-('Sak','Sannie','0763254456','SakSannie@internext.co.za','female',1999-12-25);
+('Walkerley','Kyle','0769409564','kyle_walk@icloud.com','male',30-10-2001,1,1,1),
+('Aartaple','At','0825568794','ATAARTAPLE@gmail.com','male',2001-04-25,2,2,2),
+('Sak','Sannie','0763254456','SakSannie@internext.co.za','female',1999-12-25,3,3,3);
 
 insert into interests (interest)
 values
@@ -89,3 +90,6 @@ add column status integer references status (status_id)
 
 alter table my_contacts
 add column profession integer references profession (prof_id)
+
+alter column contact_interest
+add column 
