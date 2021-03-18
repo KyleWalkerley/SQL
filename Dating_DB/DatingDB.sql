@@ -19,7 +19,7 @@ CONSTRAINT interest_key PRIMARY KEY (interest_id)
 
 CREATE TABLE seeking(
 seeking_id bigserial,
-seeking varchar(50),
+seeking varchar(500),
 CONSTRAINT seeking_key PRIMARY KEY (seeking_id)
 );
 
@@ -42,9 +42,15 @@ status varchar (50),
 CONSTRAINT status_key PRIMARY KEY (status_id)
 );
 
-CREATE TABLE contact_seeking();
+CREATE TABLE contact_seeking(
+contact_id integer REFERENCES my_contacts (contact_id),
+seeking_id integer REFERENCES seeking (seeking_id)
+);
 
-CREATE TABLE contact_interest();
+CREATE TABLE contact_interest(
+contact_id integer REFERENCES my_contacts (contact_id),
+interest_id integer REFERENCES interests (interest_id)
+);
 
 insert into my_contacts (last_name,first_name,phone,email,gender,birthday,profession,status,zip_code)
 values
@@ -82,6 +88,18 @@ values
 ('Single'),
 ('Divorced');
 
+insert into contact_interest(contact_id,interest_id)
+values
+(1,1),
+(2,2),
+(3,3);
+
+insert into contact_seeking(contact_id,seeking_id)
+values
+(1,1),
+(2,2),
+(3,3);
+
 alter table my_contacts
 add column zip_code integer references zip_code(zip_code_id)
 
@@ -91,5 +109,24 @@ add column status integer references status (status_id)
 alter table my_contacts
 add column profession integer references profession (prof_id)
 
-alter column contact_interest
-add column 
+drop table contact_interest
+
+drop table contact_seeking
+
+
+SELECT first_name, last_name, profession.profession, zip_code.city, zip_code.province, status.status, interests.interest, seeking.seeking
+FROM my_contacts
+LEFT JOIN profession
+ON my_contacts.profession = profession.prof_id
+LEFT JOIN zip_code
+ON my_contacts.zip_code = zip_code.zip_code_id
+LEFT JOIN status
+ON my_contacts.status = status.status_id
+LEFT JOIN contact_seeking 
+ON my_contacts.contact_id = contact_seeking.seeking_id
+LEFT JOIN seeking
+ON contact_seeking.seeking_id = seeking.seeking_id
+LEFT JOIN contact_interest
+ON my_contacts.contact_id = contact_interest.interest_id
+LEFT JOIN interests
+ON contact_interest.interest_id= interests.interest_id
